@@ -6,7 +6,7 @@ from tools import web_search, scrape_url
 from dotenv import load_dotenv
 load_dotenv()
 
-llm = ChatGroq(model="qwen/qwen3-32b", temp=0)
+llm = ChatGroq(model="qwen/qwen3-32b", temperature=0)
 
 # first agent
 def build_search_agent():
