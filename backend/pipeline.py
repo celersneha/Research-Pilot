@@ -3,7 +3,7 @@ from agents import build_reader_agent, build_search_agent, writer_chain, critic_
 def run_research_pipeline(topic:str) -> dict:
     state = {}
     
-    # search agent working
+    # Step -1 search agent working
     print("\n"+" ="*50)
     print("step 1 - search agent is working ...")
     print("="*50)
@@ -24,4 +24,23 @@ def run_research_pipeline(topic:str) -> dict:
     state["search_results"] = search_result["messages"][-1].content
     
     print("\n search result ", state["search_results"])
+    
+    # Step - 2 Reader agent working
+    print("\n"+" ="*50)
+    print("step 2 - Reader agent is scraping top resources ...")
+    print("="*50)
+    
+    reader_agent = build_reader_agent()
+    reader_result = reader_agent.invoke({
+        "messages": [("user",
+            f"Based on the following search results about '{topic}', "
+            f"pick the most relevant URL and scrape it for deeper content.\n\n"
+            f"Search Results:\n{state['search_results'][:800]}"
+        )]
+    })
+    
+    state["scraped_content"] = reader_result["messages"][-1].content
+    
+    print("\n scraped content\n", state["scraped_content"])
+    
     
