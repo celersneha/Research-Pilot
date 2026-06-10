@@ -23,4 +23,19 @@ def web_search(query : str) -> str:
         
     return "\n----\n".join(out)
 
-print(web_search.invoke("What is the recent news of war?"))
+# print(web_search.invoke("What is the recent news of war?"))
+
+@tool
+def scrape_url(url:str)->str:
+    """Scrape and return clean text context from a given url for deeper reading."""
+    try:
+        resp = requests.get(url, timeout=8, headers={"User-Agent" : "Mozilla/5.0"})
+        # BeautifulSoup is HTML ko Python object me convert karta hai.
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for tag in soup(["script", "style" , "nav", "footer"]):
+            tag.decompose()
+        return soup.get_text(separator=" ", strip=True)[:3000]
+    except Exception as e:
+        return f"Could not scrape URL: {str(e)}"
+
+# print(scrape_url.invoke("https://indianexpress.com/article/sports/cricket/rohit-sharma-returns-fitness-india-vs-afghanistan-odi-net-session-10733664/"))
