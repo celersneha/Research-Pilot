@@ -56,3 +56,5 @@ pytest-asyncio>=1.0.0
 # Types
 typing-extensions>=4.14.1
 rich
+streamlit
+langchain-mistralai
